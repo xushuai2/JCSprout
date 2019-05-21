@@ -1,9 +1,5 @@
 package com.crossoverjie.concurrent;
 
-import com.crossoverjie.concurrent.communication.Notify;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -14,6 +10,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.crossoverjie.concurrent.communication.Notify;
+
 /**
  * Function:线程池
  *
@@ -22,6 +23,18 @@ import java.util.concurrent.locks.ReentrantLock;
  * @since JDK 1.8
  */
 public class CustomThreadPool {
+	
+	/*1. 线程为什么能够一直存活？
+
+	　　每个Woker是一个Runnable，同时会绑定到一个线程上。在执行Worker的run方法时，会去队列中获取任务，
+	  但是获取任务是阻塞的获取，如果没有则线程会一直等待，因此不会被终止。
+	  最终还是会转移到重入锁上并有内部同步器来完成执行阻塞的操作。
+
+	2. 参数keepAliveTime的具体原理？
+
+	　　在ThreadPoolExecutor的getTask方法中，如果当前池里线程的数量大于核心数量或者设置 allowCoreThreadTimeOut为true的话，
+	  则调用的是阻塞队列的 poll(long timeout,TimeUnit unit)方法，该方法等待指定的时间后会直接返回。
+	  worker线程会获取到返回的任务，如果为空的话，则退出循环，因此线程便结束了。*/
 
     private final static Logger LOGGER = LoggerFactory.getLogger(CustomThreadPool.class);
     private final ReentrantLock lock = new ReentrantLock();
@@ -243,6 +256,7 @@ public class CustomThreadPool {
                 //大于核心线程数时需要用保活时间获取任务
                 task = workQueue.poll(keepAliveTime, unit);
             } else {
+            	//阻塞等待 
                 task = workQueue.take();
             }
 
