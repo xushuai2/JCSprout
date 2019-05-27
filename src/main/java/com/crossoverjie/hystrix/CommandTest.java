@@ -1,10 +1,10 @@
 package com.crossoverjie.hystrix;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Function: 线程隔离测试
@@ -25,12 +25,12 @@ public class CommandTest {
 
         //阻塞方式执行
         String execute = commandPhone.execute();
-        LOGGER.info("execute=[{}]", execute);
+        LOGGER.info("阻塞方式执行execute=[{}]", execute);
 
         //异步非阻塞方式
         Future<String> queue = command.queue();
         String value = queue.get(200, TimeUnit.MILLISECONDS);
-        LOGGER.info("value=[{}]", value);
+        LOGGER.info("异步非阻塞方式value=[{}]", value);
 
 
         CommandUser commandUser = new CommandUser("张三");

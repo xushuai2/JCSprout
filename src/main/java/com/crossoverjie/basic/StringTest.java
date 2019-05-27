@@ -34,6 +34,6 @@ public class StringTest {
         char[] values = (char[]) value.get(a);
         values[0] = '9' ;
 
-        System.out.println(a);
+        System.out.println("反射的方式改变字符串的值 a=" +a);
     }
 }

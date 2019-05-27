@@ -1,8 +1,8 @@
 package com.crossoverjie.red;
 
-import org.junit.Test;
-
 import java.util.List;
+
+import org.junit.Test;
 
 public class RedPacketTest {
 
@@ -43,5 +43,13 @@ public class RedPacketTest {
             sum += red ;
         }
         System.out.println(sum);
+    }
+    
+    @Test
+    public void right__xs(){
+    	Integer dsd = null;
+    	if(dsd<60){
+    		System.out.println("---");
+    	}
     }
 }
